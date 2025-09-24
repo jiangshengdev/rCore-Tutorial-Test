@@ -1,4 +1,6 @@
 use crate::SignalAction;
+use core::sync::atomic::compiler_fence;
+use core::sync::atomic::Ordering;
 
 use super::{Stat, TimeVal};
 
@@ -47,6 +49,7 @@ pub const SYSCALL_CONDVAR_WAIT: usize = 473;
 
 pub fn syscall(id: usize, args: [usize; 3]) -> isize {
     let mut ret: isize;
+    compiler_fence(Ordering::SeqCst);
     unsafe {
         core::arch::asm!(
             "ecall",
@@ -56,11 +59,13 @@ pub fn syscall(id: usize, args: [usize; 3]) -> isize {
             in("x17") id
         );
     }
+    compiler_fence(Ordering::SeqCst);
     ret
 }
 
 pub fn syscall6(id: usize, args: [usize; 6]) -> isize {
     let mut ret: isize;
+    compiler_fence(Ordering::SeqCst);
     unsafe {
         core::arch::asm!("ecall",
             inlateout("x10") args[0] => ret,
@@ -72,6 +77,7 @@ pub fn syscall6(id: usize, args: [usize; 6]) -> isize {
             in("x17") id
         );
     }
+    compiler_fence(Ordering::SeqCst);
     ret
 }
 
