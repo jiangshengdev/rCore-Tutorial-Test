@@ -17,6 +17,436 @@ lazy_static = { version = "1.4.0", features = ["spin_no_std"] }
 test = false
 bench = false
 
+[[bin]]
+name = "ch2b_bad_address"
+test = false
+bench = false
+
+[[bin]]
+name = "ch2b_bad_instructions"
+test = false
+bench = false
+
+[[bin]]
+name = "ch2b_bad_register"
+test=false
+bench=false
+
+[[bin]]
+name = "ch2b_hello_world"
+test=false
+bench=false
+
+[[bin]]
+name = "ch2b_power_3"
+test=false
+bench=false
+
+[[bin]]
+name = "ch2b_power_5"
+test=false
+bench=false
+
+[[bin]]
+name = "ch2b_power_7"
+test=false
+bench=false
+
+[[bin]]
+name = "ch3_sleep"
+test=false
+bench=false
+
+[[bin]]
+name = "ch3_sleep1"
+test=false
+bench=false
+
+[[bin]]
+name = "ch3_trace"
+test=false
+bench=false
+
+[[bin]]
+name = "ch3b_yield0"
+test=false
+bench=false
+
+[[bin]]
+name = "ch3b_yield1"
+test=false
+bench=false
+
+[[bin]]
+name = "ch3b_yield2"
+test=false
+bench=false
+
+[[bin]]
+name = "ch4_mmap0"
+test=false
+bench=false
+
+[[bin]]
+name = "ch4_mmap1"
+test=false
+bench=false
+
+[[bin]]
+name = "ch4_mmap2"
+test=false
+bench=false
+
+[[bin]]
+name = "ch4_mmap3"
+test=false
+bench=false
+
+[[bin]]
+name = "ch4_trace1"
+test=false
+bench=false
+
+[[bin]]
+name = "ch4_unmap"
+test=false
+bench=false
+
+[[bin]]
+name = "ch4_unmap2"
+test=false
+bench=false
+
+[[bin]]
+name = "ch4b_sbrk"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_exit0"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_exit1"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_getpid"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_setprio"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_spawn0"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_spawn1"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_stride"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_stride0"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_stride1"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_stride2"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_stride3"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_stride4"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_stride5"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5_usertest"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5b_exit"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5b_forktest_simple"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5b_forktest"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5b_forktest2"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5b_forktree"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5b_initproc"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5b_user_shell"
+test=false
+bench=false
+
+[[bin]]
+name = "ch5b_usertest"
+test=false
+bench=false
+
+[[bin]]
+name = "ch6_file0"
+test=false
+bench=false
+
+[[bin]]
+name = "ch6_file1"
+test=false
+bench=false
+
+[[bin]]
+name = "ch6_file2"
+test=false
+bench=false
+
+[[bin]]
+name = "ch6_file3"
+test=false
+bench=false
+
+[[bin]]
+name = "ch6_usertest"
+test=false
+bench=false
+
+[[bin]]
+name = "ch6b_cat"
+test=false
+bench=false
+
+[[bin]]
+name = "ch6b_filetest_simple"
+test=false
+bench=false
+
+[[bin]]
+name = "ch6b_initproc"
+test=false
+bench=false
+
+[[bin]]
+name = "ch6b_user_shell"
+test=false
+bench=false
+
+[[bin]]
+name = "ch6b_usertest"
+test=false
+bench=false
+
+[[bin]]
+name = "ch7_usertest"
+test=false
+bench=false
+
+[[bin]]
+name = "ch7b_cat"
+test=false
+bench=false
+
+[[bin]]
+name = "ch7b_initproc"
+test=false
+bench=false
+
+[[bin]]
+name = "ch7b_pipe_large_test"
+test=false
+bench=false
+
+[[bin]]
+name = "ch7b_pipetest"
+test=false
+bench=false
+
+[[bin]]
+name = "ch7b_run_pipe_test"
+test=false
+bench=false
+
+[[bin]]
+name = "ch7b_sig_simple"
+test=false
+bench=false
+
+[[bin]]
+name = "ch7b_sig_simple2"
+test=false
+bench=false
+
+[[bin]]
+name = "ch7b_sig_tests"
+test=false
+bench=false
+
+[[bin]]
+name = "ch7b_user_shell"
+test=false
+bench=false
+
+[[bin]]
+name = "ch7b_usertest"
+test=false
+bench=false
+
+[[bin]]
+name = "ch7b_yield"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8_deadlock_mutex1"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8_deadlock_sem1"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8_deadlock_sem2"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8_usertest"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_initproc"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_mpsc_sem"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_phil_din_mutex"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_race_adder_atomic"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_race_adder_loop"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_race_adder_mutex_spin"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_race_adder"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_stackful_coroutine"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_stackless_coroutine"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_sync_sem"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_test_condvar"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_threads_arg"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_threads"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_user_shell"
+test=false
+bench=false
+
+[[bin]]
+name = "ch8b_usertest"
+test=false
+bench=false
+
+[[bin]]
+name = "ch9b_initproc"
+test=false
+bench=false
+
+[[bin]]
+name = "ch9b_usertest"
+test=false
+bench=false
+
 [profile.release]
 opt-level = "z" # Optimize for size.
 strip = true    # Automatically strip symbols from the binary.
