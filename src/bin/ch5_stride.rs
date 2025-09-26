@@ -12,8 +12,7 @@ static TESTS: &[&str] = &[
     "ch5_stride5\0",
 ];
 
-
-use user_lib::{spawn, waitpid, set_priority};
+use user_lib::{set_priority, spawn, waitpid};
 
 #[no_mangle]
 pub fn main() -> i32 {
@@ -24,7 +23,7 @@ pub fn main() -> i32 {
         i += 1;
     }
     set_priority(4);
-    for i in 0..6{
+    for i in 0..6 {
         let mut xstate: i32 = Default::default();
         let wait_pid = waitpid(pid[i] as usize, &mut xstate);
         assert_eq!(pid[i], wait_pid);

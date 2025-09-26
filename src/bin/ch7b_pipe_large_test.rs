@@ -1,13 +1,12 @@
 #![no_std]
 #![no_main]
 
+extern crate alloc;
 #[macro_use]
 extern crate user_lib;
 
-extern crate alloc;
-
 use alloc::format;
-use user_lib::{close, fork, get_time, pipe, read, wait, write,getpid};
+use user_lib::{close, fork, getpid, pipe, read, wait, write};
 
 const LENGTH: usize = 3000;
 #[no_mangle]

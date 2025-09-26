@@ -2,9 +2,9 @@
 #![no_main]
 #![allow(clippy::println_empty_string)]
 
+extern crate alloc;
 #[macro_use]
 extern crate user_lib;
-extern crate alloc;
 
 use user_lib::{enable_deadlock_detect, mutex_blocking_create, mutex_lock, mutex_unlock};
 

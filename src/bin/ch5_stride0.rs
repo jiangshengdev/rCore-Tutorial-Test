@@ -38,6 +38,11 @@ pub fn count_during(prio: isize) -> isize {
 pub fn main() -> usize {
     let prio = 5;
     let count = count_during(prio);
-    println!("priority = {}, exitcode = {}, ratio = {}", prio, count, count/prio);
+    println!(
+        "priority = {}, exitcode = {}, ratio = {}",
+        prio,
+        count,
+        count / prio
+    );
     0
 }

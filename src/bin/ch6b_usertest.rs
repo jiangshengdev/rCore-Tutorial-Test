@@ -49,4 +49,3 @@ pub fn main() -> i32 {
     println!("Basic usertests passed!");
     0
 }
-
