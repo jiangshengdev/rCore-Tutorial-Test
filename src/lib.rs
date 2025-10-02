@@ -164,7 +164,7 @@ pub fn open(path: &str, flags: OpenFlags) -> isize {
 
 pub fn close(fd: usize) -> isize {
     if fd == STDOUT {
-        console::flush();
+        flush();
     }
     sys_close(fd)
 }
@@ -198,7 +198,7 @@ pub fn mail_write(pid: usize, buf: &[u8]) -> isize {
 }
 
 pub fn exit(exit_code: i32) -> ! {
-    console::flush();
+    flush();
     sys_exit(exit_code);
 }
 
