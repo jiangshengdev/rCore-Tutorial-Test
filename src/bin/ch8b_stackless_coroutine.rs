@@ -3,18 +3,17 @@
 #![no_std]
 #![no_main]
 
+extern crate alloc;
+#[macro_use]
+extern crate user_lib;
 use core::future::Future;
 use core::pin::Pin;
 use core::task::{Context, Poll};
 use core::task::{RawWaker, RawWakerVTable, Waker};
 
-extern crate alloc;
 use alloc::collections::VecDeque;
 
 use alloc::boxed::Box;
-
-#[macro_use]
-extern crate user_lib;
 
 enum State {
     Halted,

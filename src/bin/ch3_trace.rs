@@ -4,8 +4,8 @@
 extern crate user_lib;
 
 use user_lib::{
-    count_syscall, get_time, println, sleep, trace_read, trace_write,
-    SYSCALL_EXIT, SYSCALL_GETTIMEOFDAY, SYSCALL_TRACE, SYSCALL_WRITE, SYSCALL_YIELD
+    count_syscall, get_time, println, sleep, trace_read, trace_write, SYSCALL_EXIT,
+    SYSCALL_GETTIMEOFDAY, SYSCALL_TRACE, SYSCALL_WRITE, SYSCALL_YIELD,
 };
 
 pub fn write_const(var: &u8, new_val: u8) {
@@ -40,7 +40,9 @@ pub fn main() -> usize {
     let mut var = 111u8;
     assert_eq!(Some(111), trace_read(&var as *const u8));
     write_const(&var, (t1 ^ t2 ^ t3 ^ t4 ^ t5) as u8);
-    assert_eq!((t1 ^ t2 ^ t3 ^ t4 ^ t5) as u8, unsafe { core::ptr::read_volatile(&var) });
+    assert_eq!((t1 ^ t2 ^ t3 ^ t4 ^ t5) as u8, unsafe {
+        core::ptr::read_volatile(&var)
+    });
 
     assert!(None != trace_read(main as *const _));
     println!("Test trace OK!");

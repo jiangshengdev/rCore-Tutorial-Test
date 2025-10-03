@@ -3,7 +3,6 @@
 #![allow(clippy::println_empty_string)]
 
 extern crate alloc;
-
 #[macro_use]
 extern crate user_lib;
 

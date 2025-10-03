@@ -4,8 +4,7 @@
 #[macro_use]
 extern crate user_lib;
 
-static TESTS: &[&str] = &[
-];
+static TESTS: &[&str] = &[];
 
 use user_lib::{spawn, waitpid};
 
