@@ -33,6 +33,7 @@ enum State {
 }
 
 struct Task {
+    #[allow(dead_code)]
     id: usize,
     stack: Vec<u8>,
     ctx: TaskContext,
@@ -256,7 +257,7 @@ pub fn yield_task() {
 /// see: https://doc.rust-lang.org/nightly/rust-by-example/unsafe/asm.html
 #[naked]
 #[no_mangle]
-unsafe fn switch(old: *mut TaskContext, new: *const TaskContext) {
+unsafe extern "C" fn switch(old: *mut TaskContext, new: *const TaskContext) {
     // a0: _old, a1: _new
     asm!(
         "

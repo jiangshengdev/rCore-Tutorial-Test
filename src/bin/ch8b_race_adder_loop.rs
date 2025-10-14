@@ -6,6 +6,7 @@ extern crate alloc;
 extern crate user_lib;
 
 use alloc::vec::Vec;
+use core::ptr::addr_of_mut;
 use user_lib::{exit, get_time, thread_create, waittid, yield_};
 
 static mut A: usize = 0;
@@ -21,7 +22,7 @@ unsafe fn f() -> ! {
         }
         OCCUPIED = true;
         // enter critical section
-        let a = &mut A as *mut usize;
+        let a = addr_of_mut!(A);
         let cur = a.read_volatile();
         for _ in 0..500 {
             t = t * t % 10007;
