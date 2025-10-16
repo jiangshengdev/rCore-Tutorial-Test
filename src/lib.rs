@@ -76,12 +76,15 @@ fn main(_argc: usize, _argv: &[&str]) -> i32 {
 
 bitflags! {
     pub struct OpenFlags: u32 {
-        const RDONLY = 0;
         const WRONLY = 1 << 0;
         const RDWR = 1 << 1;
         const CREATE = 1 << 9;
         const TRUNC = 1 << 10;
     }
+}
+
+impl OpenFlags {
+    pub const RDONLY: OpenFlags = OpenFlags::empty();
 }
 
 #[repr(C)]
@@ -147,12 +150,15 @@ impl Default for Stat {
 
 bitflags! {
     pub struct StatMode: u32 {
-        const NULL  = 0;
         /// directory
         const DIR   = 0o040000;
         /// ordinary regular file
         const FILE  = 0o100000;
     }
+}
+
+impl StatMode {
+    pub const NULL: StatMode = StatMode::empty();
 }
 
 const AT_FDCWD: isize = -100;
