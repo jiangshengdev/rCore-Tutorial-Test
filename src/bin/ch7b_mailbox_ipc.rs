@@ -27,18 +27,18 @@ fn recv_blocking(buf: &mut [u8]) -> usize {
 
 fn run_parent(child_pid: usize) {
     let parent_pid = getpid() as usize;
-    println!("[parent] pid = {}, child = {}", parent_pid, child_pid);
+    println!("[父进程] 进程号 = {}，子进程 = {}", parent_pid, child_pid);
 
     let mut handshake = [0u8; 1 + size_of::<usize>()];
     handshake[0] = STAGE_HANDSHAKE;
     handshake[1..].copy_from_slice(&parent_pid.to_le_bytes());
     assert_eq!(mail_write(child_pid, &handshake), handshake.len() as isize);
-    println!("[parent] sent handshake ({} bytes)", handshake.len());
+    println!("[父进程] 已发送握手 ({} 字节)", handshake.len());
 
     let mut ack = [0u8; 3];
     let got = recv_blocking(&mut ack);
     println!(
-        "[parent] got handshake ack: len={}, bytes={:02x} {:02x} {:02x}",
+        "[父进程] 收到握手确认: 长度={}, 字节={:02x} {:02x} {:02x}",
         got, ack[0], ack[1], ack[2]
     );
     assert_eq!(got, ack.len());
@@ -49,7 +49,7 @@ fn run_parent(child_pid: usize) {
     large_payload[0] = STAGE_LARGE;
     let wrote = mail_write(child_pid, &large_payload);
     println!(
-        "[parent] sent large payload: requested={}, actual={}",
+        "[父进程] 发送大负载: 期望={}，实际={}",
         LARGE_SEND_LEN, wrote
     );
     assert_eq!(wrote, MAX_MSG_LEN as isize);
@@ -57,7 +57,7 @@ fn run_parent(child_pid: usize) {
     let mut large_ack = [0u8; 3];
     let got = recv_blocking(&mut large_ack);
     println!(
-        "[parent] got large ack: len={}, bytes={:02x} {:02x} {:02x}",
+        "[父进程] 收到大负载确认: 长度={}, 字节={:02x} {:02x} {:02x}",
         got, large_ack[0], large_ack[1], large_ack[2]
     );
     assert_eq!(got, large_ack.len());
@@ -68,7 +68,7 @@ fn run_parent(child_pid: usize) {
     let trunc_message = [STAGE_TRUNC, 0xa0, 0xa1, 0xa2, 0xa3, 0xa4];
     let wrote = mail_write(child_pid, &trunc_message);
     println!(
-        "[parent] sent trunc payload: requested={}, actual={}",
+        "[父进程] 发送截断负载: 期望={}，实际={}",
         TRUNC_TOTAL_LEN, wrote
     );
     assert_eq!(wrote, TRUNC_TOTAL_LEN as isize);
@@ -76,7 +76,7 @@ fn run_parent(child_pid: usize) {
     let mut trunc_ack = [0u8; 4];
     let got = recv_blocking(&mut trunc_ack);
     println!(
-        "[parent] got trunc ack: len={}, bytes={:02x} {:02x} {:02x} {:02x}",
+        "[父进程] 收到截断确认: 长度={}, 字节={:02x} {:02x} {:02x} {:02x}",
         got, trunc_ack[0], trunc_ack[1], trunc_ack[2], trunc_ack[3]
     );
     assert_eq!(got, trunc_ack.len());
@@ -90,7 +90,7 @@ fn run_child() -> i32 {
     let mut buf = [0u8; MAX_MSG_LEN];
     let handshake_len = recv_blocking(&mut buf);
     println!(
-        "[child] received handshake len={}, bytes[0]={:02x}",
+        "[子进程] 收到握手 长度={}，首字节={:02x}",
         handshake_len, buf[0]
     );
     assert_eq!(handshake_len, 1 + size_of::<usize>());
@@ -98,14 +98,14 @@ fn run_child() -> i32 {
     let mut parent_bytes = [0u8; size_of::<usize>()];
     parent_bytes.copy_from_slice(&buf[1..handshake_len]);
     let parent_pid = usize::from_le_bytes(parent_bytes);
-    println!("[child] parent pid = {}", parent_pid);
+    println!("[子进程] 父进程号 = {}", parent_pid);
 
     let ack = [STAGE_HANDSHAKE, b'O', b'K'];
     assert_eq!(mail_write(parent_pid, &ack), ack.len() as isize);
-    println!("[child] sent handshake ack");
+    println!("[子进程] 已发送握手确认");
 
     let large_len = recv_blocking(&mut buf);
-    println!("[child] received large payload len={}", large_len);
+    println!("[子进程] 收到大负载 长度={}", large_len);
     assert_eq!(large_len, MAX_MSG_LEN);
     assert_eq!(buf[0], STAGE_LARGE);
     for &byte in buf[1..large_len].iter() {
@@ -114,15 +114,15 @@ fn run_child() -> i32 {
     let len_bytes = (large_len as u16).to_le_bytes();
     let large_ack = [STAGE_LARGE, len_bytes[0], len_bytes[1]];
     assert_eq!(mail_write(parent_pid, &large_ack), large_ack.len() as isize);
-    println!("[child] sent large ack len={}", large_ack.len());
+    println!("[子进程] 已发送大负载确认 长度={}", large_ack.len());
 
     let mut small_buf = [0u8; 4];
     let trunc_len = recv_blocking(&mut small_buf);
-    println!("[child] received trunc payload len={}", trunc_len);
+    println!("[子进程] 收到截断负载 长度={}", trunc_len);
     assert_eq!(trunc_len, TRUNC_TOTAL_LEN);
     assert_eq!(small_buf[0], STAGE_TRUNC);
     assert_eq!(mail_write(parent_pid, &small_buf), small_buf.len() as isize);
-    println!("[child] sent trunc ack len={}", small_buf.len());
+    println!("[子进程] 已发送截断确认 长度={}", small_buf.len());
 
     0
 }
@@ -138,6 +138,6 @@ pub fn main() -> i32 {
     let waited = waitpid(pid as usize, &mut code);
     assert_eq!(waited, pid);
     assert_eq!(code, 0);
-    println!("\x1b[32mch7b_mailbox_ipc passed\x1b[0m");
+    println!("\x1b[32mch7b_mailbox_ipc 测试通过\x1b[0m");
     0
 }
