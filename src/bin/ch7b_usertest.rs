@@ -21,6 +21,9 @@ const TESTS: &[&str] = &[
     "ch7b_sig_simple\0",
     "ch7b_pipetest\0",
     "ch7b_pipe_large_test\0",
+    "ch7b_mailbox_self\0",
+    "ch7b_mailbox_ipc\0",
+    "ch7b_mailbox_limits\0",
 ];
 
 const TEST_NUM: usize = TESTS.len();
