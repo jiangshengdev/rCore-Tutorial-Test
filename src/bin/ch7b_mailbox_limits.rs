@@ -67,10 +67,7 @@ fn run_parent(child_pid: usize) {
 fn run_child() -> i32 {
     let mut buf = [0u8; 512];
     let handshake_len = recv_blocking(&mut buf);
-    println!(
-        "[子进程] 握手长度={}，首字节={:02x}",
-        handshake_len, buf[0]
-    );
+    println!("[子进程] 握手长度={}，首字节={:02x}", handshake_len, buf[0]);
     assert_eq!(handshake_len, 1 + size_of::<usize>());
     assert_eq!(buf[0], STAGE_HANDSHAKE);
     let mut parent_bytes = [0u8; size_of::<usize>()];
