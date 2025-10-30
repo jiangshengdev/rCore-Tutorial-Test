@@ -298,6 +298,26 @@ test = false
 bench = false
 
 [[bin]]
+name = "ch7b_mailbox"
+test = false
+bench = false
+
+[[bin]]
+name = "ch7b_mailbox_ipc"
+test = false
+bench = false
+
+[[bin]]
+name = "ch7b_mailbox_limits"
+test = false
+bench = false
+
+[[bin]]
+name = "ch7b_mailbox_self"
+test = false
+bench = false
+
+[[bin]]
 name = "ch7b_pipe_large_test"
 test = false
 bench = false
