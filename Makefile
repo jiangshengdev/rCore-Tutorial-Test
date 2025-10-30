@@ -36,7 +36,7 @@ endif
 ELFS := $(patsubst $(APP_DIR)/%.rs, $(TARGET_DIR)/%, $(APPS))
 
 binary:
-	@echo $(ELFS)
+	@printf '%s\n' $(ELFS)
 	@if [ ${CHAPTER_NUM} -gt 3 ]; then \
 		cargo build $(MODE_ARG) ;\
 	else \
