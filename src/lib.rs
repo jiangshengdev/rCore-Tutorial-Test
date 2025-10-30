@@ -35,11 +35,12 @@ fn clear_bss() {
         fn end_bss();
     }
     unsafe {
-        core::slice::from_raw_parts_mut(
-            start_bss as usize as *mut u8,
-            end_bss as usize - start_bss as usize,
-        )
-        .fill(0);
+        let start = start_bss as usize as *mut u8;
+        let end = end_bss as usize as *mut u8;
+        let size = end as usize - start as usize;
+
+        // 使用 write_bytes 进行高效的批量清零
+        core::ptr::write_bytes(start, 0, size);
     }
 }
 
