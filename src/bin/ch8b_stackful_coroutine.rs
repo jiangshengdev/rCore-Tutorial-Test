@@ -87,7 +87,7 @@ impl Runtime {
 
         // We initialize the rest of our tasks.
         let mut tasks = vec![base_task];
-        let mut available_tasks: Vec<Task> = (1..MAX_TASKS).map(|i| Task::new(i)).collect();
+        let mut available_tasks: Vec<Task> = (1..MAX_TASKS).map(Task::new).collect();
         tasks.append(&mut available_tasks);
 
         Runtime { tasks, current: 0 }
@@ -157,7 +157,7 @@ impl Runtime {
         // and not on linux. This is a common problem in tests so Rust has a `black_box` function in the `test` crate that
         // will "pretend" to use a value we give it to prevent the compiler from eliminating code. I'll just do this instead,
         // this code will never be run anyways and if it did it would always be `true`.
-        self.tasks.len() > 0
+        !self.tasks.is_empty()
     }
 
     /// While `yield` is the logically interesting function I think this the technically most interesting.
@@ -185,7 +185,7 @@ impl Runtime {
 
         let size = available.stack.len();
         unsafe {
-            let s_ptr = available.stack.as_mut_ptr().offset(size as isize);
+            let s_ptr = available.stack.as_mut_ptr().add(size);
 
             // make sure our stack itself is 8 byte aligned - it will always
             // offset to a lower memory address. Since we know we're at the "high"
@@ -194,8 +194,8 @@ impl Runtime {
             // enough space to actually get an aligned pointer in the first place).
             let s_ptr = (s_ptr as usize & !7) as *mut u8;
 
-            available.ctx.x1 = guard as u64; //ctx.x1  is old return address
-            available.ctx.nx1 = f as u64; //ctx.nx2 is new return address
+            available.ctx.x1 = guard as usize as u64; //ctx.x1  is old return address
+            available.ctx.nx1 = f as usize as u64; //ctx.nx2 is new return address
             available.ctx.x2 = s_ptr.offset(-32) as u64; //cxt.x2 is sp
         }
         available.state = State::Ready;

@@ -54,8 +54,8 @@ pub fn main() -> i32 {
     }
     let mut tids = [0; THREAD_N];
 
-    for i in 0..THREAD_N {
-        tids[i] = thread_create(deadlock_test as usize, 0) as usize;
+    for item in tids.iter_mut().take(THREAD_N) {
+        *item = thread_create(deadlock_test as usize, 0) as usize;
     }
 
     sleep(1000);

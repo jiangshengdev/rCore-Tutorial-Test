@@ -38,7 +38,7 @@ pub fn main() -> i32 {
         println!("Usertests: Running {}", test);
         let pid = fork();
         if pid == 0 {
-            exec(&*test, &[core::ptr::null::<u8>()]);
+            exec(test, &[core::ptr::null::<u8>()]);
             panic!("unreachable!");
         } else {
             pids[i] = pid;

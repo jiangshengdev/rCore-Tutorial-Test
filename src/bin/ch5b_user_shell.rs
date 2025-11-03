@@ -30,7 +30,7 @@ pub fn main() -> i32 {
                     let pid = fork();
                     if pid == 0 {
                         // child process
-                        if exec(line.as_str(), &[0 as *const u8]) == -1 {
+                        if exec(line.as_str(), &[core::ptr::null::<u8>()]) == -1 {
                             println!("Error when executing!");
                             return -4;
                         }

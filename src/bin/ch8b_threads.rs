@@ -46,7 +46,7 @@ pub fn thread_c() -> ! {
 
 #[no_mangle]
 pub fn main() -> i32 {
-    let v = vec![
+    let v = [
         thread_create(thread_a as usize, 0),
         thread_create(thread_b as usize, 0),
         thread_create(thread_c as usize, 0),

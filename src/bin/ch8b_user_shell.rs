@@ -46,7 +46,7 @@ impl ProcessArguments {
             .enumerate()
             .find(|(_, arg)| arg.as_str() == "<\0")
         {
-            input = args_copy[idx + 1].clone();
+            input.clone_from(&args_copy[idx + 1]);
             args_copy.drain(idx..=idx + 1);
         }
 
@@ -57,7 +57,7 @@ impl ProcessArguments {
             .enumerate()
             .find(|(_, arg)| arg.as_str() == ">\0")
         {
-            output = args_copy[idx + 1].clone();
+            output.clone_from(&args_copy[idx + 1]);
             args_copy.drain(idx..=idx + 1);
         }
 

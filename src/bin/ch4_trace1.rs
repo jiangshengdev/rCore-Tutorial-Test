@@ -25,7 +25,7 @@ pub fn main() -> usize {
 
     assert_eq!(0, mmap(start, len, prot));
 
-    assert!(None != trace_read(start as *const u8));
+    assert!(trace_read(start as *const u8).is_some());
     assert_eq!(-1, trace_write(start as *const u8, 0));
 
     assert_eq!(0, munmap(start, len));
