@@ -75,6 +75,12 @@ impl Task {
     }
 }
 
+impl Default for Runtime {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Runtime {
     pub fn new() -> Self {
         // This will be our base task, which will be initialized in the `running` state
