@@ -44,7 +44,7 @@ pub fn main() -> usize {
         core::ptr::read_volatile(&var)
     });
 
-    assert!(None != trace_read(main as *const _));
+    assert!(trace_read(main as *const _).is_some());
     println!("Test trace OK!");
     0
 }

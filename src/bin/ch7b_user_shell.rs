@@ -48,7 +48,7 @@ pub fn main() -> i32 {
                         .enumerate()
                         .find(|(_, arg)| arg.as_str() == "<\0")
                     {
-                        input = args_copy[idx + 1].clone();
+                        input.clone_from(&args_copy[idx + 1]);
                         args_copy.drain(idx..=idx + 1);
                     }
 
@@ -59,13 +59,13 @@ pub fn main() -> i32 {
                         .enumerate()
                         .find(|(_, arg)| arg.as_str() == ">\0")
                     {
-                        output = args_copy[idx + 1].clone();
+                        output.clone_from(&args_copy[idx + 1]);
                         args_copy.drain(idx..=idx + 1);
                     }
 
                     let mut args_addr: Vec<*const u8> =
                         args_copy.iter().map(|arg| arg.as_ptr()).collect();
-                    args_addr.push(0 as *const u8);
+                    args_addr.push(core::ptr::null::<u8>());
                     let pid = fork();
                     if pid == 0 {
                         // input redirection

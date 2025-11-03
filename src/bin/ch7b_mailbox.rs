@@ -16,7 +16,7 @@ use user_lib::{spawn, waitpid};
 pub fn main() -> i32 {
     for test in TESTS {
         println!("Mailbox tests: Running {}", test);
-        let pid = spawn(*test);
+        let pid = spawn(test);
         let mut status: i32 = 0;
         let waited = waitpid(pid as usize, &mut status);
         assert_eq!(waited, pid);

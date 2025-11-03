@@ -31,7 +31,7 @@ pub fn main() -> i32 {
     // create semaphores
     assert_eq!(semaphore_create(0) as usize, SEM_SYNC);
     // create threads
-    let threads = vec![
+    let threads = [
         thread_create(first as usize, 0),
         thread_create(second as usize, 0),
     ];

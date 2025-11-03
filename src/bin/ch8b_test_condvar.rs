@@ -45,7 +45,7 @@ pub fn main() -> i32 {
     assert_eq!(condvar_create() as usize, CONDVAR_ID);
     assert_eq!(mutex_blocking_create() as usize, MUTEX_ID);
     // create threads
-    let threads = vec![
+    let threads = [
         thread_create(first as usize, 0),
         thread_create(second as usize, 0),
     ];
