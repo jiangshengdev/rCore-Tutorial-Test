@@ -5,7 +5,6 @@ extern crate alloc;
 #[macro_use]
 extern crate user_lib;
 
-use alloc::vec;
 use user_lib::{exit, thread_create, waittid};
 
 pub fn thread_a() -> ! {

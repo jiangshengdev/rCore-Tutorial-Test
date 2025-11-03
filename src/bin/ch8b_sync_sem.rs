@@ -5,7 +5,6 @@ extern crate alloc;
 #[macro_use]
 extern crate user_lib;
 
-use alloc::vec;
 use user_lib::exit;
 use user_lib::{semaphore_create, semaphore_down, semaphore_up};
 use user_lib::{sleep_blocking, thread_create, waittid};

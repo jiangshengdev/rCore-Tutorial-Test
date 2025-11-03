@@ -5,7 +5,6 @@ extern crate alloc;
 #[macro_use]
 extern crate user_lib;
 
-use alloc::vec;
 use user_lib::exit;
 use user_lib::{
     condvar_create, condvar_signal, condvar_wait, mutex_blocking_create, mutex_lock, mutex_unlock,
