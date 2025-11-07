@@ -17,16 +17,14 @@ use user_lib::{set_priority, spawn, waitpid};
 #[no_mangle]
 pub fn main() -> i32 {
     let mut pid = [0; 6];
-    let mut i = 0;
-    for test in TESTS {
-        pid[i] = spawn(*test);
-        i += 1;
+    for (slot, &test) in pid.iter_mut().zip(TESTS.iter()) {
+        *slot = spawn(test);
     }
     set_priority(4);
-    for i in 0..6 {
+    for &child in &pid {
         let mut xstate: i32 = Default::default();
-        let wait_pid = waitpid(pid[i] as usize, &mut xstate);
-        assert_eq!(pid[i], wait_pid);
+        let wait_pid = waitpid(child as usize, &mut xstate);
+        assert_eq!(child, wait_pid);
     }
     0
 }

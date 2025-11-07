@@ -16,7 +16,7 @@ const HEIGHT: usize = 5;
 #[no_mangle]
 fn main() -> i32 {
     for i in 0..HEIGHT {
-        let buf = ['A' as u8; WIDTH];
+        let buf = [b'A'; WIDTH];
         println!(
             "{} [{}/{}]",
             core::str::from_utf8(&buf).unwrap(),

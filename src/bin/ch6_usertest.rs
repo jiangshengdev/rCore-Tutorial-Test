@@ -40,9 +40,9 @@ use user_lib::{spawn, waitpid};
 
 #[no_mangle]
 pub fn main() -> i32 {
-    for test in TESTS {
+    for &test in TESTS {
         println!("Usertests: Running {}", test);
-        let pid = spawn(*test);
+        let pid = spawn(test);
         let mut xstate: i32 = Default::default();
         let wait_pid = waitpid(pid as usize, &mut xstate);
         assert_eq!(pid, wait_pid);

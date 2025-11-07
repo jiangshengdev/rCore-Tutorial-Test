@@ -1,11 +1,9 @@
 #![no_std]
 #![no_main]
 
-extern crate alloc;
 #[macro_use]
 extern crate user_lib;
 
-use alloc::vec;
 use user_lib::exit;
 use user_lib::{semaphore_create, semaphore_down, semaphore_up};
 use user_lib::{sleep_blocking, thread_create, waittid};
@@ -31,13 +29,13 @@ pub fn main() -> i32 {
     // create semaphores
     assert_eq!(semaphore_create(0) as usize, SEM_SYNC);
     // create threads
-    let threads = vec![
+    let threads = [
         thread_create(first as usize, 0),
         thread_create(second as usize, 0),
     ];
     // wait for all threads to complete
-    for thread in threads.iter() {
-        waittid(*thread as usize);
+    for &thread in &threads {
+        waittid(thread as usize);
     }
     println!("sync_sem passed!");
     0

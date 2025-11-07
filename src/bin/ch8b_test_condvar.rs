@@ -1,11 +1,9 @@
 #![no_std]
 #![no_main]
 
-extern crate alloc;
 #[macro_use]
 extern crate user_lib;
 
-use alloc::vec;
 use user_lib::exit;
 use user_lib::{
     condvar_create, condvar_signal, condvar_wait, mutex_blocking_create, mutex_lock, mutex_unlock,
@@ -45,13 +43,13 @@ pub fn main() -> i32 {
     assert_eq!(condvar_create() as usize, CONDVAR_ID);
     assert_eq!(mutex_blocking_create() as usize, MUTEX_ID);
     // create threads
-    let threads = vec![
+    let threads = [
         thread_create(first as usize, 0),
         thread_create(second as usize, 0),
     ];
     // wait for all threads to complete
-    for thread in threads.iter() {
-        waittid(*thread as usize);
+    for &thread in &threads {
+        waittid(thread as usize);
     }
     println!("test_condvar passed!");
     0

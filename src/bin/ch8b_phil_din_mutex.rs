@@ -82,7 +82,7 @@ pub fn main() -> i32 {
     let time_cost = get_time_u() - start;
     println!("time cost = {}", time_cost);
     println!("'-' -> THINKING; 'x' -> EATING; ' ' -> WAITING ");
-    for id in (0..N).into_iter().chain(0..=0) {
+    for id in (0..N).chain(0..=0) {
         print!("#{}:", id);
         for j in 0..time_cost / GRAPH_SCALE {
             let current_time = j * GRAPH_SCALE + start;
