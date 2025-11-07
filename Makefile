@@ -27,7 +27,7 @@ else
 	ifeq ($(BASE), 0) # Normal tests only
 		APPS := $(foreach T, $(TESTS), $(wildcard $(APP_DIR)/ch$(T)_*.rs))
 	else ifeq ($(BASE), 1) # Basic tests only
-		APPS := $(foreach T, $(TESTS), $(wildcard $(APP_DIR)/ch8b_threads.rs))
+		APPS := $(foreach T, $(TESTS), $(wildcard $(APP_DIR)/ch$(T)b_*.rs))
 	else # Basic and normal
 		APPS := $(foreach T, $(TESTS), $(wildcard $(APP_DIR)/ch$(T)*.rs))
 	endif
