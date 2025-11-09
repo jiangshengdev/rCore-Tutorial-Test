@@ -15,7 +15,11 @@ BASE ?= 0
 CHAPTER ?= 0
 TEST ?= $(CHAPTER)
 
-CHAPTER_NUM := $(shell echo $(CHAPTER) | sed 's/-debug//')
+CHAPTER_NUM := $(shell echo $(CHAPTER) | sed 's/-debug//' | sed 's/[^0-9].*//')
+ifeq ($(strip $(CHAPTER_NUM)),)
+	CHAPTER_NUM := 0
+endif
+BIN_BEFORE_FS := $(shell [ $(CHAPTER_NUM) -lt 6 ] 2>/dev/null && echo 1 || echo 0)
 TEST_NUM := $(shell echo $(TEST) | sed 's/-debug//')
 
 ifeq ($(TEST_NUM), 0) # No test, deprecated, previously used in v3
@@ -34,6 +38,12 @@ else
 endif
 
 ELFS := $(patsubst $(APP_DIR)/%.rs, $(TARGET_DIR)/%, $(APPS))
+BIN_OBJCMDS := $(foreach elf, $(ELFS), $(OBJCOPY) $(elf) --strip-all -O binary $(patsubst $(TARGET_DIR)/%, $(TARGET_DIR)/%.bin, $(elf)); )
+BIN_COPYCMDS := $(foreach t, $(ELFS), cp $(t).bin $(BUILD_DIR)/bin/;)
+ifeq ($(BIN_BEFORE_FS),0)
+BIN_OBJCMDS :=
+BIN_COPYCMDS :=
+endif
 
 binary:
 	@printf '%s\n' $(ELFS)
@@ -42,9 +52,8 @@ binary:
 	else \
 		CHAPTER=$(CHAPTER_NUM) python3 build.py ;\
 	fi
-	@$(foreach elf, $(ELFS), \
-		$(OBJCOPY) $(elf) --strip-all -O binary $(patsubst $(TARGET_DIR)/%, $(TARGET_DIR)/%.bin, $(elf)); \
-		cp $(elf) $(patsubst $(TARGET_DIR)/%, $(TARGET_DIR)/%.elf, $(elf));)
+	@$(if $(BIN_OBJCMDS),$(BIN_OBJCMDS),:)
+	@$(foreach elf, $(ELFS), cp $(elf) $(patsubst $(TARGET_DIR)/%, $(TARGET_DIR)/%.elf, $(elf));)
 
 disasm:
 	@$(foreach elf, $(ELFS), \
@@ -59,7 +68,7 @@ pre:
 	@$(foreach t, $(APPS), cp $(t) $(BUILD_DIR)/app/;)
 
 build: clean pre binary
-	@$(foreach t, $(ELFS), cp $(t).bin $(BUILD_DIR)/bin/;)
+	@$(if $(BIN_COPYCMDS),$(BIN_COPYCMDS),:)
 	@$(foreach t, $(ELFS), cp $(t).elf $(BUILD_DIR)/elf/;)
 
 clean:
