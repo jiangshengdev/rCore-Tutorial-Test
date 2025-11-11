@@ -15,27 +15,34 @@ static OCCUPIED: AtomicBool = AtomicBool::new(false);
 const PER_THREAD: usize = 1000;
 const THREAD_COUNT: usize = 16;
 
+/// 线程入口：使用 AtomicBool 构造的自旋锁保护共享变量自增
 unsafe fn f() -> ! {
     let mut t = 2usize;
+    // 通过 CAS 抢占锁，失败则让出 CPU 再试
     for _ in 0..PER_THREAD {
         while OCCUPIED
             .compare_exchange(false, true, Ordering::Relaxed, Ordering::Relaxed)
             .is_err()
         {
+            // 失败：让出 CPU，降低忙等开销
             yield_();
         }
+        // 持有“锁”：进入临界区
         let a = addr_of_mut!(A);
         let cur = a.read_volatile();
+        // 纯计算：放大临界区时间
         for _ in 0..500 {
             t = t * t % 10007;
         }
         a.write_volatile(cur + 1);
+        // 释放“锁”
         OCCUPIED.store(false, Ordering::Relaxed);
     }
     exit(t as i32)
 }
 
 #[no_mangle]
+/// 程序入口：并发创建多个原子自旋锁版本的线程并等待结束
 pub fn main() -> i32 {
     let start = get_time();
     let mut v = Vec::new();
