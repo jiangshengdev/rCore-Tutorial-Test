@@ -10,8 +10,11 @@ use core::ptr::addr_of_mut;
 use user_lib::{exit, get_time, thread_create, waittid};
 use user_lib::{mutex_create, mutex_lock, mutex_unlock};
 
+// 共享计数器：受互斥锁保护，避免竞争
 static mut A: usize = 0;
+// 每线程循环次数
 const PER_THREAD: usize = 1000;
+// 并发线程数量
 const THREAD_COUNT: usize = 16;
 
 /// 线程入口：使用互斥锁保护共享变量的自增，避免数据竞争
@@ -40,9 +43,9 @@ unsafe fn f() -> ! {
 pub fn main() -> i32 {
     // 记录起始时间
     let start = get_time();
-    // 创建互斥锁 id=0
+    // 创建互斥锁（编号 0）
     assert_eq!(mutex_create(), 0);
-    // 保存线程 id
+    // 保存线程标识（id）
     let mut v = Vec::new();
     // 并发启动多个加锁版本线程
     for _ in 0..THREAD_COUNT {

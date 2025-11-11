@@ -10,21 +10,25 @@ use core::ptr::addr_of_mut;
 use core::sync::atomic::{AtomicBool, Ordering};
 use user_lib::{exit, get_time, thread_create, waittid, yield_};
 
+// 共享计数器：受原子自旋锁保护
 static mut A: usize = 0;
+// 自旋锁标志：CAS(比较并交换)获取/释放，Relaxed(宽松)内存序仅为演示
 static OCCUPIED: AtomicBool = AtomicBool::new(false);
+// 每线程自增次数
 const PER_THREAD: usize = 1000;
+// 并发线程数量
 const THREAD_COUNT: usize = 16;
 
-/// 线程入口：使用 AtomicBool 构造的自旋锁保护共享变量自增
+/// 线程入口：使用 AtomicBool（原子布尔）构造的自旋锁保护共享变量自增
 unsafe fn f() -> ! {
     let mut t = 2usize;
-    // 通过 CAS 抢占锁，失败则让出 CPU 再试
+    // 通过 CAS(比较并交换)抢占锁，失败则让出 CPU 再试
     for _ in 0..PER_THREAD {
         while OCCUPIED
             .compare_exchange(false, true, Ordering::Relaxed, Ordering::Relaxed)
             .is_err()
         {
-            // 失败：让出 CPU，降低忙等开销
+            // 抢锁失败：让出 CPU，降低忙等开销
             yield_();
         }
         // 持有“锁”：进入临界区

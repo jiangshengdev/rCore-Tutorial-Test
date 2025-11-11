@@ -9,8 +9,11 @@ use alloc::vec::Vec;
 use core::ptr::addr_of_mut;
 use user_lib::{exit, get_time, thread_create, waittid};
 
+// 共享计数器：多个线程并发执行读-改-写（无同步），存在数据竞争
 static mut A: usize = 0;
+// 每个线程自增的次数（负载规模）
 const PER_THREAD: usize = 1000;
+// 并发线程数量
 const THREAD_COUNT: usize = 16;
 
 /// 线程入口：在无任何同步的情况下对共享变量自增（存在数据竞争）
@@ -26,7 +29,7 @@ unsafe fn f() -> ! {
         for _ in 0..500 {
             t = t * t % 10007;
         }
-        // 非原子写回：典型 RMW 竞态窗口
+        // 非原子写回：典型读-改-写(RMW)竞态窗口
         a.write_volatile(cur + 1);
     }
     exit(t as i32)
@@ -37,9 +40,9 @@ unsafe fn f() -> ! {
 pub fn main() -> i32 {
     // 记录起始时间
     let start = get_time();
-    // 保存线程 id
+    // 保存线程标识（id）
     let mut v = Vec::new();
-    // 创建多个线程并发执行 f
+    // 创建多个线程并发执行函数 f
     for _ in 0..THREAD_COUNT {
         v.push(thread_create(f as usize, 0) as usize);
     }

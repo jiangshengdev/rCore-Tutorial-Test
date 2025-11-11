@@ -8,22 +8,23 @@ use user_lib::exit;
 use user_lib::{semaphore_create, semaphore_down, semaphore_up};
 use user_lib::{sleep_blocking, thread_create, waittid};
 
+// 同步信号量 ID：初始为 0，控制 second 的启动时机
 const SEM_SYNC: usize = 0;
 
-/// 线程一：完成自身工作后通过 up 增加信号量计数，唤醒等待者
+/// 线程一：完成自身工作后通过 up(增加) 操作增加信号量计数，唤醒等待者
 unsafe fn first() -> ! {
-    // 工作模拟：延迟一段时间确保 second 先进入阻塞
+    // 工作模拟：延迟一段时间确保第二线程先进入阻塞
     sleep_blocking(10);
     println!("First work and wakeup Second");
-    // 增加计数：若 second 已在 down 阻塞则被唤醒
+    // 增加计数：若第二线程已在 down(等待/减少) 阻塞则被唤醒
     semaphore_up(SEM_SYNC);
     exit(0)
 }
 
-/// 线程二：先执行 down 等待信号量，确认线程一已完成后继续
+/// 线程二：先执行 down(等待/减少) 等待信号量，确认线程一已完成后继续
 unsafe fn second() -> ! {
     println!("Second want to continue,but need to wait first");
-    // 初始计数为 0 → 在此阻塞直到 first 调用 up
+    // 初始计数为 0 → 在此阻塞直到第一线程调用 up(增加)
     semaphore_down(SEM_SYNC);
     println!("Second can work now");
     exit(0)
@@ -32,14 +33,14 @@ unsafe fn second() -> ! {
 #[no_mangle]
 /// 程序入口：创建初始值为 0 的同步信号量并启动两个线程
 pub fn main() -> i32 {
-    // create semaphores
+    // 创建信号量
     assert_eq!(semaphore_create(0) as usize, SEM_SYNC);
-    // create threads
+    // 创建线程
     let threads = [
         thread_create(first as usize, 0),
         thread_create(second as usize, 0),
     ];
-    // wait for all threads to complete
+    // 等待全部线程结束
     for &thread in &threads {
         waittid(thread as usize);
     }

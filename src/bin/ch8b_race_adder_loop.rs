@@ -9,17 +9,21 @@ use alloc::vec::Vec;
 use core::ptr::addr_of_mut;
 use user_lib::{exit, get_time, thread_create, waittid, yield_};
 
+// 共享计数器：通过非原子布尔“伪锁”保护，仍可能产生竞态
 static mut A: usize = 0;
+// 忙等标志：非原子读写，无内存序保证
 static mut OCCUPIED: bool = false;
+// 每线程自增次数
 const PER_THREAD: usize = 1000;
+// 并发线程数量
 const THREAD_COUNT: usize = 16;
 
 /// 线程入口：使用普通布尔变量进行忙等“伪锁”保护共享变量（存在竞态风险）
 unsafe fn f() -> ! {
     let mut t = 2usize;
-    // 每次循环尝试获取非原子标志并执行一次 RMW 序列
+    // 每次循环尝试获取非原子标志并执行一次读-改-写(RMW)序列
     for _ in 0..PER_THREAD {
-        // 忙等等待标志变为 false；读取与后续写入之间存在竞态窗口
+        // 忙等等待标志变为 false（假）；读取与后续写入之间存在竞态窗口
         while OCCUPIED {
             yield_();
         }
